@@ -1,18 +1,24 @@
+
 import React, { useState } from 'react';
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
 
+
 import axios from 'axios';
+
 
 const initialForm = {
   email: '',
   password: '',
 };
 
+
 export default function Login() {
   const [form, setForm] = useState(initialForm);
 
+
   const history = useHistory();
+
 
   const handleChange = (event) => {
     let { name, value, type } = event.target;
@@ -20,10 +26,13 @@ export default function Login() {
     setForm({ ...form, [name]: value });
   };
 
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
+
     if (!form.terms) return;
+
 
     axios
       .get('https://6540a96145bedb25bfc247b4.mockapi.io/api/login')
@@ -39,6 +48,7 @@ export default function Login() {
         }
       });
   };
+
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -64,6 +74,7 @@ export default function Login() {
           value={form.password}
         />
       </FormGroup>
+
 
       <FormGroup check>
         <Input
