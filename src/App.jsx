@@ -1,67 +1,54 @@
-import { useState } from 'react';
-import './app.css';
-import Task from './components/Task';
-import TaskHookForm from './components/TaskHookForm';
-import PeopleForm from './components/PeopleForm';
-import { initialTasks, initialTeam } from './data';
-import { toast } from 'react-toastify';
+import { Switch, Route, useLocation } from 'react-router-dom';
+
+
+import Header from './components/Header';
+import Footer from './components/Footer';
+
+
+import Products from './components/Products';
+import SideBar from './components/SideBar';
+import Login from './components/Login';
+
+
+import './App.css';
+import './components/Layout.css';
+import ErrorPage from './components/ErrorPage';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
-  const [tasks, setTasks] = useState(initialTasks);
-  const [team, setTeam] = useState(initialTeam);
-
-  function handleTaskSubmit(yeniTask) {
-    setTasks([yeniTask, ...tasks]);
-  }
-
-  function handlePeopleSubmit(yeniKisi) {
-    setTeam([...team, yeniKisi]);
-  }
-
-  function handleComplete(id) {
-    console.log('tamamlama fonksiyonunu buraya yazın');
-    toast.success('2 idli görev tamamlandı.');
-    alert('hede');
-  }
-
   return (
-    <div className="app">
-      <div className="formColumn">
-        <div className="form-container">
-          <h2>Yeni Task</h2>
-          {/* <TaskForm kisiler={team} submitFn={handleTaskSubmit} /> */}
-          <TaskHookForm kisiler={team} submitFn={handleTaskSubmit} />
-        </div>
-
-        <div className="form-container">
-          <h2>Yeni Kişi</h2>
-          <PeopleForm kisiler={team} submitFn={handlePeopleSubmit} />
-        </div>
+    <>
+      <Header />
+      <div className="content-section">
+        <Switch>
+          <Route exact path="/">
+            <Login />
+          </Route>
+          <Route exact path="/main">
+            <SideBar />
+            <Products />
+          </Route>
+          <Route exact path="/error">
+            <ErrorPage />
+          </Route>
+        </Switch>
       </div>
-      <div className="columns">
-        <div className="column">
-          <h2 className="column-title">Yapılacaklar</h2>
-          <div className="column-list">
-            {tasks
-              .filter((t) => t.status === 'yapılacak')
-              .map((t) => (
-                <Task key={t.id} taskObj={t} onComplete={handleComplete} />
-              ))}
-          </div>
-        </div>
-        <div className="column">
-          <h2 className="column-title">Tamamlananlar</h2>
-          <div className="column-list">
-            {tasks
-              .filter((t) => t.status === 'yapıldı')
-              .map((t) => (
-                <Task key={t.id} taskObj={t} />
-              ))}
-          </div>
-        </div>
-      </div>
-    </div>
+      <Footer />
+      <LocationDisplay />
+    </>
   );
 }
 
+
+export const LocationDisplay = () => {
+  const location = useLocation();
+
+
+  return <div data-testid="location-display">{location.pathname}</div>;
+};
+
+
 export default App;
+
+
