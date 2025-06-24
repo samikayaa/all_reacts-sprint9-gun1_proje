@@ -92,6 +92,7 @@ export default function Login() {
         <Button disabled={!form.terms} color="primary">
           Sign In
         </Button>
+        <ToastContainer />
       </FormGroup>
     </Form>
   );
