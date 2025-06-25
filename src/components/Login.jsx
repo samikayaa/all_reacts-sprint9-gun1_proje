@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 
 
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 const initialForm = {
@@ -43,8 +44,10 @@ export default function Login() {
         if (user) {
           setForm(initialForm);
           history.push('/main');
+          toast.success(`Merhaba ${user.name}`)
         } else {
           history.push('/error');
+          toast.error(`Hatalı giriş`)
         }
       });
   };
@@ -92,7 +95,6 @@ export default function Login() {
         <Button disabled={!form.terms} color="primary">
           Sign In
         </Button>
-        <ToastContainer />
       </FormGroup>
     </Form>
   );
