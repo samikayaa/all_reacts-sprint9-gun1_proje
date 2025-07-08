@@ -1,15 +1,14 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
 
-export default function TaskHookForm() {
+export default function TaskHookForm({ kisiler, submitFn }) {
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isValid }
-  } = useForm();
-
+  } = useForm({ mode: "onChange" });
 
   const ourSubmit = (data) => {
 
@@ -17,7 +16,6 @@ export default function TaskHookForm() {
 
     // RESET'i kullanacağız
   };
-
 
 
   return (
@@ -38,7 +36,7 @@ export default function TaskHookForm() {
             minLength: { value: 3, message: "Task başlığı en az 3 karakterden oluşmalıdır", }
           })}
         />
-        <p className="input-error">{formErrors.title}</p>
+        {errors.title && <p className="input-error">{errors.title.message}</p>}
       </div>
 
       <div className="form-line">
@@ -50,8 +48,12 @@ export default function TaskHookForm() {
           rows="3"
           id="description"
           name="description"
-          onChange={handleOthersChange}
-          value={formData.description}
+          //onChange={handleOthersChange}
+          //value={formData.description}
+          {...register('description', {
+            required: "Task açıklaması yazar mısın acaba??",
+            minLength: { value: 10, message: "Task açıklaması ennn az 10 karakter!" }
+          })}
         ></textarea>
         <p className="input-error">{formErrors.description}</p>
       </div>
@@ -65,8 +67,12 @@ export default function TaskHookForm() {
                 type="checkbox"
                 name="people"
                 value={p}
-                onChange={handleCheckboxChange}
-                checked={formData.people.includes(p)}
+                //onChange={handleCheckboxChange}
+                //checked={formData.people.includes(p)}
+                {...register('people', {
+                  required: "Lütfen 1 kişi seç, bozuşuruz!",
+                  validate: { maxKisi: (value) => { value.length < 3 || "Ennnn fazla 3 varlık seçilebilir. :) " } }
+                })}
               />
               {p}
             </label>
